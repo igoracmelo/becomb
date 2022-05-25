@@ -1,3 +1,5 @@
+import { game } from './config.js'
+
 export class Wall {
   constructor(x, y) {
     this.x = x

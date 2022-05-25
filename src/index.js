@@ -1,5 +1,6 @@
+import { Wall } from './wall.js'
 import { Player } from './player.js'
-import { createMatrix } from './utils.js'
+import { createMatrix, randomPosition } from './utils.js'
 import { game } from './config.js'
 
 // const { game.width, game.height, game.colors, game.keymaps } = game
@@ -7,21 +8,6 @@ import { game } from './config.js'
 
 // function copy(obj) {
 //   return JSON.parse(JSON.stringify(obj))
-// }
-
-// export const game = {
-  // paused: true,
-
-  // endMatch() {
-  //   this.paused = true
-  //   clearInterval(this.intervalId)
-  // },
-
-  // newMatch() {
-  //   // debugger
-  //   clearInterval(this.intervalId)
-  //   this.intervalId = setup()
-  // }
 // }
 
 fullscreen.onclick = () => {
@@ -114,11 +100,12 @@ function setup() {
 
   game.walls = []
   // for (let i = 0; i < 10; i++) {
-  //   const { x, y } = randomPosition([
-  //     (x, y) => !players.some((player) => player.body.some((part) => part.x === x && part.y === y)),
+  //   const { x, y } = randomPosition(game.width - 1, game.height - 1, [
+  //     (x, y) => !game.players.some((player) => player.body.some((part) => part.x === x && part.y === y)),
   //   ])
 
-  //   walls.push(new Wall(x, y))
+  //   // debugger
+  //   game.walls.push(new Wall(x, y))
   // }
 
   game.players.forEach((p) => p.right())

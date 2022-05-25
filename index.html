@@ -8,8 +8,19 @@
 </head>
 <body>
   <canvas id="canvas"></canvas>
-  <div id="cover"></div>
-  <button id="fullscreen">Clique aqui</button>
+  <div id="cover">
+    <div class="popup">
+      <!-- <br> -->
+      <div class="title">Instruções</div>
+      <div>Player 1: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> e <kbd>Q</kbd></div>
+      <div>Player 2: <kbd>I</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd> e <kbd>U</kbd></div>
+      <!-- <br> -->
+      <div>Inicar a partida: <kbd>Spacebar</kbd></div>
+      <!-- <br> -->
+      <div>Recomeçar a partida: <kbd>R</kbd></div>
+      <button id="fullscreen">Começar</button>
+    </div>
+  </div>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -17,6 +28,7 @@
       margin: 0;
       padding: 0;
       font: inherit;
+      text-transform: uppercase;
     }
 
     body {
@@ -40,19 +52,43 @@
       width: 100%;
       height: 100%;
       background-color: #555a;
+      display: grid;
+      place-items: center;
     }
 
     #fullscreen {
       /* padding: 10px 20px; */
-      width: 300px;
+      /* width: 300px; */
       height: 50px;
-      position: absolute;
-      top: calc(50% - 25px);
-      left: calc(50% - 150px);
       color: white;
       background-color: #db653a;
       /* border-top: */
       border: rgb(215, 130, 99) outset;
+    }
+
+    .popup {
+      width: 500px;
+      /* height: 500px; */
+      padding: 20px;
+      /* position: absolute;
+      top: calc(50% - 250px);
+      left: calc(50% - 200px); */
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      background-color: #ccc;
+    }
+
+    .title {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      color: #c45831;
+    }
+    kbd {
+      margin: 0 3px;
+      padding: 3px 5px;
+      background-color: #aaa;
     }
   </style>
 

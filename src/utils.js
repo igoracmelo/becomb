@@ -3,6 +3,7 @@ export function randomPosition(maxX, maxY, validations = []) {
   do {
     x = parseInt(Math.random() * maxX)
     y = parseInt(Math.random() * maxY)
+    // debugger
   } while (!validations.every((v) => !v || v(x, y)))
   return { x, y }
 }
