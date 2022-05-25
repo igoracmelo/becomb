@@ -24,7 +24,7 @@ import { game } from './config.js'
   // }
 // }
 
-window.onclick = () => {
+fullscreen.onclick = () => {
   const requestFullScreen = canvas.requestFullScreen || canvas.webkitRequestFullScreen
   requestFullScreen.call(canvas)
 }
