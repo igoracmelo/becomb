@@ -33,14 +33,6 @@ window.onkeydown = (e) => {
     const [i, fn] = command.split('.')
     game.players[i][fn]()
   }
-
-  if (e.key === ' ') {
-    game.paused = false
-  }
-
-  if (e.key === 'r') {
-    game.newMatch()
-  }
 }
 
 // function cleanTile(x, y) {
@@ -71,6 +63,13 @@ window.onkeydown = (e) => {
 //     }
 //   }
 // }
+
+let gamepadEnabled = false
+let gamepads = []
+
+window.addEventListener('gamepadconnected', () => {
+  gamepadEnabled = true
+})
 
 function setup() {
   // clearBoard()
@@ -120,6 +119,40 @@ function setup() {
 }
 
 function loop() {
+  if (gamepadEnabled) {
+    gamepads = navigator.getGamepads()
+    gamepads.forEach((gamepad, i) => {
+      if (!gamepad) return
+      const x = gamepad.axes[0]
+      const y = gamepad.axes[1]
+
+      const button = gamepad.buttons.findIndex(b => b.pressed)
+      let map = `gamepad${i}.${button}`
+
+      if (x || y) {
+        if (x > 0) {
+          map = `gamepad${i}.+x`
+        } else if (x < 0) {
+          map = `gamepad${i}.-x`
+        }
+
+        if (y > 0) {
+          map = `gamepad${i}.+y`
+        } else if (y < 0) {
+          map = `gamepad${i}.-y`
+        }
+      }
+
+      let command = game.keymaps[map]
+
+      if (command && command !== gamepad.previousCommand) {
+        const [i, fn] = command.split('.')
+        game.players[i][fn]()
+        gamepad.previousCommand = command
+      }
+    })
+  }
+
   game.players.forEach((p) => {
     p.erase()
   })

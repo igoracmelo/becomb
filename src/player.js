@@ -177,4 +177,12 @@ export class Player {
       this.facing = 'down'
     }
   }
+
+  start() {
+    game.paused = !game.paused
+  }
+
+  restart() {
+    game.newMatch()
+  }
 }

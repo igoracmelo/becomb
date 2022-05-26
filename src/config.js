@@ -27,6 +27,16 @@ const keymaps = {
   w: '0.up',
   s: '0.down',
   q: '0.reverse',
+  ' ': '0.start',
+  r: '0.restart',
+
+  'gamepad0.+x': '0.right',
+  'gamepad0.-x': '0.left',
+  'gamepad0.+y': '0.down',
+  'gamepad0.-y': '0.up',
+  'gamepad0.1': '0.reverse',
+  'gamepad0.9': '0.start',
+  'gamepad0.8': '0.restart',
 
   j: '1.left',
   l: '1.right',
