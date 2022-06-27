@@ -60,8 +60,10 @@ export class Player {
 
   reverse() {
     this.body = this.body.reverse()
-    this.speed.x *= -1
-    this.speed.y *= -1
+    const deltaX = this.body[0].x - this.body[1].x
+    const deltaY = this.body[0].y - this.body[1].y
+    this.speed.x = this.moveSpeed * deltaX
+    this.speed.y = this.moveSpeed * deltaY
     this.facing = this.oppositeDirections[this.facing]
   }
 
