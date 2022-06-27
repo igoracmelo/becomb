@@ -1,4 +1,4 @@
-import { randomPosition, pointsIntersect } from './utils.js'
+import { randomPosition, pointsIntersect, Point } from './utils.js'
 import { game } from './config.js'
 
 // const { game.width, game.height } = game
@@ -6,29 +6,36 @@ import { game } from './config.js'
 
 // import { ctx, game.width, game.height, colors, keymaps } from './config.js'
 
+type PlayerConstructorParams = { x: number, y: number, maxX: number, maxY: number, isPlayer1?: boolean }
+type Direction = 'right' | 'down' | 'left' | 'up'
+
 export class Player {
-  directions = {
+  oppositeDirections: Record<Direction, Direction> = {
     left: 'right',
     up: 'down',
     right: 'left',
     down: 'up',
   }
-  facing = 'right'
+  facing: Direction = 'right'
   moveSpeed = 1
   moved = true
   speed = { x: 0, y: 0 }
-  body = []
+  body: Point[] = []
   charHead = 'E'
   charBody = 'e'
   enemyHead = 'S'
   enemyBody = 's'
   score = 0
   isPlayer1 = false
+  maxX: number
+  maxY: number
 
-  constructor({ x, y, maxX, maxY, isPlayer1}) {
+  // TODO: change this to a cleaner solution
+  constructor({ x, y, maxX, maxY, isPlayer1}: PlayerConstructorParams) {
     this.maxX = maxX
     this.maxY = maxY
-    this.isPlayer1 = isPlayer1
+    this.isPlayer1 = isPlayer1 ?? false
+
 
     if (isPlayer1) {
       // this.moveSpeed = 2
@@ -55,7 +62,7 @@ export class Player {
     this.body = this.body.reverse()
     this.speed.x *= -1
     this.speed.y *= -1
-    this.facing = this.directions[this.facing]
+    this.facing = this.oppositeDirections[this.facing]
   }
 
   draw() {
@@ -69,18 +76,19 @@ export class Player {
   erase() {
     for (const part of this.body) {
       // debugger
+      // if (game.board[part.y])
       game.board[part.y][part.x] = '.'
     }
   }
 
   eat() {
     this.score++
-    this.body.push({ ...this.body.at(-1) })
+    this.body.push({ ...this.body.at(-1)! })
     // cleanTile(this.head.x, this.head.y)
     game.board[this.head.y][this.head.x] = '.'
     game.fruit = randomPosition(game.width - 1, game.height - 1, [
-      (x, y) => !game.players.some((p) => p.body.some((b) => b.x === x && b.y === y)),
-      (x, y) => !game.walls.some((w) => w.x === x && w.y === y),
+      (x: number, y: number) => !game.players.some((p) => p.body.some((b) => b.x === x && b.y === y)),
+      (x: number, y: number) => !game.walls.some((w) => w.x === x && w.y === y),
     ])
   }
 

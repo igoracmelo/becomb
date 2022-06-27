@@ -1,7 +1,9 @@
-import { Wall } from './wall.js'
+// import { Wall } from './wall'
 import { Player } from './player.js'
-import { createMatrix, randomPosition } from './utils.js'
-import { game } from './config.js'
+// import { $ } from './utils'
+// import { $, createMatrix, randomPosition } from './utils'
+import { $, createMatrix } from './utils'
+import { game } from './config'
 
 // const { game.width, game.height, game.colors, game.keymaps } = game
 // const emptyBoard = copy(game.board)
@@ -10,28 +12,34 @@ import { game } from './config.js'
 //   return JSON.parse(JSON.stringify(obj))
 // }
 
+const canvas = $('#canvas') as HTMLCanvasElement
+const fullscreen = $('#fullscreen') as HTMLButtonElement
+
 fullscreen.onclick = () => {
-  const requestFullScreen = canvas.requestFullScreen || canvas.webkitRequestFullScreen
+  const requestFullScreen = canvas.requestFullscreen //|| canvas.webkitRequestFullScreen
   requestFullScreen.call(canvas)
 }
 
 game.endMatch = function () {
-  this.paused = true
-  clearInterval(this.intervalId)
+  game.paused = true
+  clearInterval(game.intervalId)
 }
 
 game.newMatch = function () {
   // debugger
-  this.paused = true
-  clearInterval(this.intervalId)
-  this.intervalId = setup()
+  game.paused = true
+  clearInterval(game.intervalId)
+  game.intervalId = setup()
 }
 
 window.onkeydown = (e) => {
   const command = game.keymaps[e.key]
   if (command) {
     const [i, fn] = command.split('.')
-    game.players[i][fn]()
+
+    // @ts-ignore
+    // TODO: solution for this
+    game.players[parseInt(i)][fn]()
   }
 }
 
@@ -71,7 +79,7 @@ window.addEventListener('gamepadconnected', () => {
   gamepadEnabled = true
 })
 
-function setup() {
+function setup(): number {
   // clearBoard()
   game.board = createMatrix(game.height, game.width, '.')
   // window.game.board = game.board
@@ -115,10 +123,12 @@ function setup() {
   }
 
   loop()
-  return setInterval(loop, 100)
+  return setInterval(loop, 100) ?? 0
 }
 
 function loop() {
+  if (!game.ctx) return
+
   if (gamepadEnabled) {
     gamepads = navigator.getGamepads()
     gamepads.forEach((gamepad, i) => {
@@ -145,9 +155,17 @@ function loop() {
 
       let command = game.keymaps[map]
 
+      // @ts-ignore
+      // TODO: solution for this
       if (command && command !== gamepad.previousCommand) {
         const [i, fn] = command.split('.')
+
+        // @ts-ignore
+        // TODO: solution for this
         game.players[i][fn]()
+
+        // @ts-ignore
+        // TODO: solution for this
         gamepad.previousCommand = command
       }
     })
@@ -157,12 +175,14 @@ function loop() {
     p.erase()
   })
 
+
   game.ctx.fillStyle = '#335'
   game.ctx.fillRect(0, 0, game.width, game.height)
 
   game.ctx.fillStyle = '#f00'
   game.ctx.fillRect(0, 0, 1, 1)
 
+  // if (game.board[game.fruit.y])
   game.board[game.fruit.y][game.fruit.x] = 'o'
 
   game.players.forEach((p) => {
