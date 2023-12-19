@@ -195,7 +195,8 @@ export class Player {
   }
 
   start() {
-    game.paused = !game.paused
+    const fullscreen = document.querySelector('#fullscreen') as HTMLButtonElement
+    fullscreen.click()
   }
 
   restart() {

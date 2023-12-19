@@ -18,6 +18,7 @@ const fullscreen = $('#fullscreen') as HTMLButtonElement
 fullscreen.onclick = () => {
   const requestFullScreen = canvas.requestFullscreen //|| canvas.webkitRequestFullScreen
   requestFullScreen.call(canvas)
+  game.paused = !game.paused
 }
 
 game.endMatch = function () {
